@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Mind Ease Wellness Hub — Where Minds Connect and Grow</title>
+  <meta name="description" content="Mind Ease Wellness Hub is a student-friendly mental wellness platform that promotes awareness, prevention, growth and community support." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌿</text></svg>" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- React & React-DOM -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <!-- Babel for JSX -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --primary-sage: #5B8A72;
+      --primary-dark-sage: #385E4C;
+      --forest-green: #274C38;
+      --accent-purple: #8E7DBE;
+      --dark-purple: #554473;
+      --bg-cream: #FAF9F5;
+      --bg-card: #FFFFFF;
+      --bg-parchment: #F4F1EA;
+      --accent-coral: #E88E7D;
+      --accent-yellow: #F6D55C;
+      --whatsapp-green: #25D366;
+      --text-dark: #22332B;
+      --text-muted: #5A6E63;
+      --border-light: rgba(91, 138, 114, 0.15);
+      --shadow-soft: 0 10px 30px -5px rgba(45, 90, 67, 0.08);
+      --shadow-hover: 0 20px 40px -10px rgba(45, 90, 67, 0.15);
+      --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-heading: 'Outfit', sans-serif;
+      --font-hand: 'Caveat', cursive;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-family: var(--font-main); background-color: var(--bg-cream); color: var(--text-dark); }
+    body { overflow-x: hidden; line-height: 1.6; }
+
+    h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); color: var(--forest-green); line-height: 1.25; }
+    .font-handwriting { font-family: var(--font-hand); }
+
+    /* Welcome Overlay */
+    .welcome-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 10000;
+      background: radial-gradient(circle at 50% 30%, rgba(234, 228, 242, 0.95) 0%, rgba(216, 236, 226, 0.95) 50%, rgba(250, 249, 245, 1) 100%), url('hero-bg.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .welcome-card {
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      border-radius: 32px;
+      padding: 40px 24px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 20px 50px rgba(39, 76, 56, 0.15);
+      animation: welcomePop 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes welcomePop {
+      0% { opacity: 0; transform: scale(0.95) translateY(15px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* Glassmorphism Card */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+      will-change: transform;
+      transform-style: preserve-3d;
+    }
+    .glass-card:hover {
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* UNIQUE BACKGROUND IMAGES FOR EVERY SINGLE PAGE */
+    .bg-page-home {
+      background: linear-gradient(rgba(250, 249, 245, 0.85), rgba(250, 249, 245, 0.94)), url('hero-bg.jpg'), linear-gradient(135deg, #FAF9F5 0%, #EAE4F2 50%, #D8ECE2 100%);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .bg-page-offerings {
+      background: linear-gradient(rgba(244, 241, 234, 0.88), rgba(250, 249, 245, 0.94)), url('workshop-bg.jpg'), linear-gradient(135deg, #FAF9F5 0%, #E2F1E8 50%, #FAF9F5 100%);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .bg-page-activities {
+      background: linear-gradient(rgba(255, 245, 242, 0.88), rgba(250, 249, 245, 0.94)), url('slider-1.jpg'), linear-gradient(135deg, #FFF5F2 0%, #EAE4F2 50%, #FAF9F5 100%);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .bg-page-experience {
+      background: linear-gradient(rgba(240, 247, 244, 0.88), rgba(244, 241, 234, 0.94)), url('slider-2.jpg'), linear-gradient(135deg, #F0F7F4 0%, #EBF3F5 50%, #F4F1EA 100%);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .bg-page-whoFor {
+      background: linear-gradient(rgba(255, 253, 240, 0.88), rgba(250, 249, 245, 0.94)), url('hero-bg.jpg'), linear-gradient(135deg, #FFFDF0 0%, #F3EEF8 50%, #FAF9F5 100%);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .bg-page-collaborate {
+      background: linear-gradient(rgba(230, 242, 236, 0.88), rgba(250, 249, 245, 0.94)), url('workshop-bg.jpg'), linear-gradient(135deg, #E6F2EC 0%, #FAF9F5 50%, #EAE4F2 100%);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .bg-page-events {
+      background: linear-gradient(rgba(250, 244, 255, 0.88), rgba(250, 249, 245, 0.94)), url('slider-1.jpg'), linear-gradient(135deg, #FAF4FF 0%, #FDFBF0 50%, #FAF9F5 100%);
+      background-size: cover;
+      background-position: center;
+    }
+
+    .sticky-note {
+      position: relative;
+      background: #FFF9C4;
+      border-radius: 4px 4px 16px 4px;
+      box-shadow: 4px 6px 14px rgba(0, 0, 0, 0.08);
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease;
+    }
+    .sticky-note:hover {
+      transform: rotate(-1deg) scale(1.03);
+      box-shadow: 6px 14px 26px rgba(0, 0, 0, 0.14);
+    }
+
+    .sticky-tape {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 80px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(2px);
+    }
+
+    .brush-banner-purple {
+      background: linear-gradient(135deg, #7E6B8F 0%, #5E4A72 100%);
+      color: white;
+      border-radius: 50px;
+      display: inline-block;
+      padding: 5px 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .brush-banner-green {
+      background: linear-gradient(135deg, #5B8A72 0%, #385E4C 100%);
+      color: white;
+      border-radius: 50px;
+      display: inline-block;
+      padding: 5px 20px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-sage), var(--primary-dark-sage));
+      color: white;
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(91, 138, 114, 0.35);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      user-select: none;
+      will-change: transform;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 22px rgba(91, 138, 114, 0.45);
+    }
+    .btn-primary:active {
+      transform: scale(0.96) !important;
+    }
+
+    .btn-secondary {
+      background: rgba(142, 125, 190, 0.12);
+      color: var(--dark-purple);
+      padding: 12px 28px;
+      border-radius: 50px;
+      font-weight: 600;
+      border: 1.5px solid var(--accent-purple);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      user-select: none;
+      will-change: transform;
+      transition: all 0.25s ease;
+    }
+    .btn-secondary:hover {
+      background: var(--accent-purple);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .btn-whatsapp {
+      background: #25D366;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+    .btn-whatsapp:hover {
+      background: #1EBE5A;
+      box-shadow: 0 8px 24px rgba(37, 211, 102, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(91, 138, 114, 0.2);
+    }
+
+    /* TOP RIGHT CLEAN MUTE / UNMUTE BUTTON ONLY */
+    .music-toggle-btn {
+      background: rgba(255, 255, 255, 0.94);
+      border: 2px solid #5B8A72;
+      color: #274C38;
+      padding: 8px 16px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(39, 76, 56, 0.14);
+      transition: all 0.25s ease;
+    }
+    .music-toggle-btn.playing {
+      background: #5B8A72;
+      color: white;
+      box-shadow: 0 4px 16px rgba(91, 138, 114, 0.45);
+    }
+    .music-toggle-btn:hover {
+      transform: translateY(-1px) scale(1.04);
+    }
+
+    /* TRANSLUCENT SIDE ARROW BUTTONS */
+    .side-nav-arrow {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 9990;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.38);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(91, 138, 114, 0.35);
+      color: rgba(39, 76, 56, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(39, 76, 56, 0.12);
+      opacity: 0.7;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .side-nav-arrow:hover {
+      background: #5B8A72;
+      color: white;
+      opacity: 1;
+      transform: translateY(-50%) scale(1.15);
+      box-shadow: 0 12px 30px rgba(39, 76, 56, 0.35);
+    }
+
+    .side-nav-arrow.left-arrow { left: 16px; }
+    .side-nav-arrow.right-arrow { right: 16px; }
+
+    .whatsapp-widget {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .whatsapp-button {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: #25D366;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(37, 211, 102, 0.45);
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      border: 3px solid white;
+    }
+    .whatsapp-button:hover {
+      transform: scale(1.1);
+    }
+
+    .whatsapp-popup {
+      position: absolute;
+      bottom: 75px;
+      right: 0;
+      width: 320px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+      overflow: hidden;
+      border: 1px solid rgba(37, 211, 102, 0.3);
+      animation: popupSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes popupSlide {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .nav-page-btn {
+      background: transparent;
+      border: none;
+      color: #385E4C;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 8px 14px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+    .nav-page-btn:hover {
+      background: rgba(91, 138, 114, 0.12);
+      color: #274C38;
+      transform: translateY(-1px);
+    }
+    .nav-page-btn.active-page {
+      background: #5B8A72;
+      color: white !important;
+      box-shadow: 0 4px 14px rgba(91, 138, 114, 0.35);
+    }
+
+    /* --- CLEAN, SILKY SMOOTH FADE-SLIDE TRANSITION --- */
+    .page-container {
+      min-height: 85vh;
+      animation: smoothFadeSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      will-change: opacity, transform;
+    }
+
+    @keyframes smoothFadeSlideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 960px) {
+      .desktop-nav { display: none !important; }
+      .side-nav-arrow { width: 44px; height: 44px; font-size: 1.1rem; }
+      .side-nav-arrow.left-arrow { left: 8px; }
+      .side-nav-arrow.right-arrow { right: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- Open Copyright Calming Peaceful Piano Meditation Background Audio (Continuous Infinite Loop) -->
+  <audio id="bg-calm-audio" loop preload="auto">
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=meditation-peaceful-piano-112269.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+    const WHATSAPP_NUMBER = "917082728149";
+    const SECRET_EMAIL_ENDPOINT = "https://formsubmit.co/ajax/gdhiman7171@gmail.com";
+
+    const pageOrder = [
+      { id: 'home', title: '🏠 Home' },
+      { id: 'offerings', title: '🌿 What We Offer' },
+      { id: 'activities', title: '🎈 Fun Activities' },
+      { id: 'experience', title: '🧘 Sessions' },
+      { id: 'whoFor', title: '👥 WHO IS IT FOR?' },
+      { id: 'collaborate', title: '🤝 Partner' },
+      { id: 'events', title: '📅 Events' }
+    ];
+
+    const sendEmailNotification = (formData) => {
+      fetch(SECRET_EMAIL_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({
+          _subject: "New Mind Ease Session Booking Inquiry! 🍃",
+          ...formData
+        })
+      }).catch(err => console.log("Email notification processed."));
+    };
+
+    const getLogo = (e) => {
+      if (!e.target.dataset.tried) {
+        e.target.dataset.tried = "true";
+        e.target.src = "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=300&q=80";
+      } else {
+        e.target.style.display = 'none';
+        if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+      }
+    };
+
+    function TiltCard({ children, style = {}, className = "", onClick }) {
+      const cardRef = useRef(null);
+      const [transformStyle, setTransformStyle] = useState("perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)");
+
+      const handleMouseMove = (e) => {
+        if (!cardRef.current) return;
+        const rect = cardRef.current.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -6;
+        const rotateY = ((x - centerX) / centerX) * 6;
+        setTransformStyle(`perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`);
+      };
+
+      const handleMouseLeave = () => {
+        setTransformStyle("perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)");
+      };
+
+      return (
+        <div
+          ref={cardRef}
+          onClick={onClick}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          className={`glass-card ${className}`}
+          style={{
+            ...style,
+            transform: transformStyle,
+            transition: 'transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease',
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+        >
+          {children}
+        </div>
+      );
+    }
+
+    function MagneticButton({ children, onClick, className = "", style = {}, type = "button", disabled = false }) {
+      return (
+        <button
+          type={type}
+          disabled={disabled}
+          onClick={onClick}
+          className={className}
+          style={{ ...style, transition: 'all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}
+        >
+          {children}
+        </button>
+      );
+    }
+
+    // --- WELCOME OVERLAY WITH PROMINENT LOGO ---
+    function WelcomePage({ onEnterWebsite }) {
+      return (
+        <div className="welcome-overlay">
+          <div className="welcome-card">
+            <div style={{ marginBottom: '18px', display: 'flex', justifyContent: 'center' }}>
+              <img
+                src="logo.jpg"
+                alt="Mind Ease Logo"
+                onError={getLogo}
+                style={{
+                  width: '120px', height: '120px', borderRadius: '50%', objectFit: 'cover',
+                  border: '5px solid #5B8A72', boxShadow: '0 12px 35px rgba(39, 76, 56, 0.3)'
+                }}
+              />
+            </div>
+
+            <h1 style={{ fontSize: 'clamp(2rem, 5vw, 2.8rem)', fontWeight: 800, color: '#274C38', marginBottom: '6px' }}>
+              Mind Ease Wellness Hub
+            </h1>
+
+            <div style={{ fontFamily: 'var(--font-hand)', fontSize: '1.8rem', fontWeight: 700, color: '#8E7DBE', marginBottom: '16px' }}>
+              Where Minds Connect and Grow 🍃
+            </div>
+
+            <p style={{ color: '#5A6E63', fontSize: '0.98rem', lineHeight: 1.5, marginBottom: '28px', maxWidth: '480px', margin: '0 auto 28px' }}>
+              Welcome to your student-friendly mental wellness sanctuary. Explore interactive activities, live gratitude walls, expert workshops, and peer community support!
+            </p>
+
+            <MagneticButton onClick={onEnterWebsite} className="btn-primary" style={{ fontSize: '1.1rem', padding: '14px 36px' }}>
+              ✨ Enter Wellness Hub Website →
+            </MagneticButton>
+          </div>
+        </div>
+      );
+    }
+
+    // --- PULL RIBBON FOR LUCKY DRAW (ICON ONLY DEFAULT -> REVEALS REGISTER LABEL WHEN PULLED) ---
+    function PullRibbon({ onRegisterLuckyGift }) {
+      const [dragDistance, setDragDistance] = useState(0);
+      const [isDragging, setIsDragging] = useState(false);
+      const startYRef = useRef(0);
+
+      const handleMouseDown = (e) => {
+        setIsDragging(true);
+        startYRef.current = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+      };
+
+      useEffect(() => {
+        const handleMouseMove = (e) => {
+          if (!isDragging) return;
+          const currentY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+          const deltaY = currentY - startYRef.current;
+          if (deltaY > 0) {
+            const newDist = Math.min(deltaY, 140);
+            setDragDistance(newDist);
+          }
+        };
+
+        const handleMouseUp = () => {
+          if (!isDragging) return;
+          setIsDragging(false);
+
+          if (dragDistance >= 50) {
+            if (window.confetti) window.confetti({ particleCount: 100, spread: 80 });
+            onRegisterLuckyGift('🎁 Mind Ease Lucky Draw Registration');
+          }
+          setDragDistance(0);
+        };
+
+        window.addEventListener('mousemove', handleMouseMove);
+        window.addEventListener('mouseup', handleMouseUp);
+        window.addEventListener('touchmove', handleMouseMove);
+        window.addEventListener('touchend', handleMouseUp);
+
+        return () => {
+          window.removeEventListener('mousemove', handleMouseMove);
+          window.removeEventListener('mouseup', handleMouseUp);
+          window.removeEventListener('touchmove', handleMouseMove);
+          window.removeEventListener('touchend', handleMouseUp);
+        };
+      }, [isDragging, dragDistance, onRegisterLuckyGift]);
+
+      const isPulled = dragDistance > 25;
+
+      return (
+        <div style={{
+          position: 'fixed', top: 0, left: '18px', zIndex: 9998,
+          display: 'flex', flexDirection: 'column', alignItems: 'center', userSelect: 'none', touchAction: 'none'
+        }}>
+          <div
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleMouseDown}
+            onClick={() => {
+              if (window.confetti) window.confetti({ particleCount: 80, spread: 70 });
+              onRegisterLuckyGift('🎁 Mind Ease Lucky Draw Registration');
+              setDragDistance(0);
+            }}
+            style={{
+              width: isPulled ? '56px' : '44px',
+              height: `${68 + dragDistance}px`,
+              background: 'linear-gradient(180deg, #FFD700 0%, #FFA500 70%, #E88E7D 100%)',
+              borderRadius: '0 0 20px 20px',
+              boxShadow: '0 8px 25px rgba(255, 165, 0, 0.45)',
+              cursor: 'grab',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between',
+              padding: '10px 4px', color: 'white',
+              transition: isDragging ? 'width 0.2s ease' : 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+            }}
+            title="Pull down or click to Register for Lucky Draw! 🎁"
+          >
+            {/* ICON ONLY DEFAULT */}
+            <div style={{ fontSize: isPulled ? '1.4rem' : '1.3rem' }}>🎁</div>
+
+            {/* REVEAL 'REGISTER FOR LUCKY DRAW' LABEL ONLY WHEN PULLED DOWN */}
+            {isPulled ? (
+              <div style={{
+                writingMode: 'vertical-rl', textTransform: 'uppercase', fontWeight: 800,
+                fontSize: '0.72rem', letterSpacing: '1px', color: '#274C38', animation: 'welcomePop 0.2s ease-out'
+              }}>
+                🎟️ REGISTER FOR LUCKY DRAW
+              </div>
+            ) : null}
+
+            <div style={{
+              width: '28px', height: '28px', borderRadius: '50%', backgroundColor: 'white',
+              color: '#E88E7D', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontWeight: 800, fontSize: '0.85rem', boxShadow: '0 2px 6px rgba(0,0,0,0.15)'
+            }}>
+              👇
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- AUTO CAROUSEL ---
+    function AutoImageCarousel() {
+      const slides = [
+        { img: 'hero-bg.jpg', fallback: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1000&q=80', title: 'Campus & Peer Support Circles', caption: 'Where students connect, share, and grow together.' },
+        { img: 'workshop-bg.jpg', fallback: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1000&q=80', title: 'Guided Meditation & Yoga', caption: 'Calm your mind and restore emotional balance.' },
+        { img: 'slider-1.jpg', fallback: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=1000&q=80', title: 'Art Without Rules Therapy', caption: 'Creative painting and crafts for emotional release.' },
+        { img: 'slider-2.jpg', fallback: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1000&q=80', title: 'Cozy Tea & Talk Lounges', caption: 'Warm conversations and supportive friendships.' }
+      ];
+
+      const [currentIdx, setCurrentIdx] = useState(0);
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setCurrentIdx(prev => (prev + 1) % slides.length);
+        }, 3500);
+        return () => clearInterval(interval);
+      }, [slides.length]);
+
+      return (
+        <div style={{ position: 'relative', width: '100%', height: '260px', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.12)', marginBottom: '20px' }}>
+          {slides.map((slide, idx) => (
+            <div
+              key={idx}
+              style={{
+                position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                opacity: idx === currentIdx ? 1 : 0,
+                transform: `translateX(${(idx - currentIdx) * 100}%)`,
+                transition: 'all 0.8s cubic-bezier(0.25, 1, 0.5, 1)'
+              }}
+            >
+              <img
+                src={slide.img}
+                alt={slide.title}
+                onError={(e) => { e.target.src = slide.fallback; }}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+              <div style={{
+                position: 'absolute', bottom: 0, left: 0, right: 0,
+                background: 'linear-gradient(to top, rgba(39, 76, 56, 0.92), transparent)',
+                padding: '20px 16px 14px', color: 'white'
+              }}>
+                <h4 style={{ fontSize: '1.15rem', color: 'white', fontWeight: 800, fontFamily: 'var(--font-heading)' }}>
+                  {slide.title}
+                </h4>
+                <p style={{ fontSize: '0.85rem', color: '#D8ECE2' }}>
+                  {slide.caption}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    // --- PROPERLY ALIGNED NAVBAR WITH LARGER LOGO & SINGLE MUTE/UNMUTE BUTTON ---
+    function Navbar({ currentPage, onNavigatePage, onOpenBooking, onShowWelcome, isMusicPlaying, onToggleMusic }) {
+      const navItems = [
+        { id: 'home', label: '🏠 Home' },
+        { id: 'offerings', label: '🌿 What We Offer' },
+        { id: 'activities', label: '🎈 Fun Activities' },
+        { id: 'experience', label: '🧘 Sessions' },
+        { id: 'whoFor', label: '👥 WHO IS IT FOR?' },
+        { id: 'collaborate', label: '🤝 Partner' },
+        { id: 'events', label: '📅 Events' }
+      ];
+
+      return (
+        <nav style={{
+          position: 'sticky', top: 0, zIndex: 1000,
+          backgroundColor: 'rgba(250, 249, 245, 0.96)',
+          backdropFilter: 'blur(14px)',
+          borderBottom: '1px solid rgba(91, 138, 114, 0.15)',
+          padding: '10px 24px'
+        }}>
+          <div style={{ maxWidth: '1280px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
+            {/* LARGER LOGO (58px × 58px) & PROPERLY ALIGNED BRAND TITLE */}
+            <a href="#" onClick={(e) => { e.preventDefault(); onNavigatePage('home'); }} style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
+              <img
+                src="logo.jpg"
+                alt="Mind Ease Logo"
+                onError={getLogo}
+                style={{
+                  width: '58px',
+                  height: '58px',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  border: '3px solid #5B8A72',
+                  boxShadow: '0 6px 18px rgba(39, 76, 56, 0.22)',
+                  transition: 'transform 0.3s ease'
+                }}
+              />
+              <div>
+                <div style={{ fontFamily: 'var(--font-heading)', fontSize: '1.45rem', fontWeight: 800, color: '#274C38', lineHeight: 1.05 }}>
+                  Mind Ease
+                </div>
+                <div style={{ fontSize: '0.68rem', fontWeight: 800, color: '#8E7DBE', letterSpacing: '1.8px', textTransform: 'uppercase', marginTop: '2px' }}>
+                  WELLNESS HUB
+                </div>
+              </div>
+            </a>
+
+            {/* CENTERED NAVIGATION PILLS */}
+            <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              {navItems.map(item => (
+                <button
+                  key={item.id}
+                  onClick={() => onNavigatePage(item.id)}
+                  className={`nav-page-btn ${currentPage === item.id ? 'active-page' : ''}`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+
+            {/* RIGHT SIDE ACTION BUTTONS WITH CLEAN SINGLE MUTE/UNMUTE BUTTON */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <button
+                onClick={onToggleMusic}
+                className={`music-toggle-btn ${isMusicPlaying ? 'playing' : ''}`}
+                title={isMusicPlaying ? "Mute Relaxing Guitar Music" : "Play Relaxing Guitar Music"}
+              >
+                <span>{isMusicPlaying ? "🔊" : "🔇"}</span>
+                <span>{isMusicPlaying ? "Calm Music Playing" : "Play Music"}</span>
+              </button>
+
+              <MagneticButton onClick={() => onOpenBooking('General Wellness Session')} className="btn-primary" style={{ padding: '8px 20px', fontSize: '0.85rem' }}>
+                📅 Book Session
+              </MagneticButton>
+            </div>
+          </div>
+        </nav>
+      );
+    }
+
+    // --- HOME PAGE ---
+    function HomePage({ onNavigatePage, onOpenBooking }) {
+      return (
+        <div className="page-container bg-page-home" style={{ padding: '50px 20px 70px' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '36px', alignItems: 'center' }}>
+              <div>
+                <div className="brush-banner-purple" style={{ fontSize: '0.8rem', marginBottom: '16px' }}>
+                  ✦ EVERY GREAT JOURNEY
+                </div>
+                <h1 style={{ fontSize: 'clamp(2.3rem, 5vw, 3.6rem)', fontWeight: 800, color: '#274C38', letterSpacing: '-0.5px', marginBottom: '16px', lineHeight: 1.15 }}>
+                  Begins with <span className="font-handwriting" style={{ color: '#8E7DBE', fontSize: '1.2em' }}>♡ Clarity, Care</span> & Connection.
+                </h1>
+                <p style={{ fontSize: '1.05rem', color: '#5A6E63', marginBottom: '28px', maxWidth: '540px', lineHeight: 1.6 }}>
+                  <strong style={{ color: '#274C38' }}>Mind Ease Wellness Hub</strong> is a student-friendly mental wellness platform that promotes <span style={{ color: '#8E7DBE', fontWeight: 600 }}>awareness, prevention, growth</span> and <span style={{ color: '#5B8A72', fontWeight: 600 }}>community support</span>. ✨
+                </p>
+
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', marginBottom: '32px' }}>
+                  <MagneticButton onClick={() => onOpenBooking('First Session Pass')} className="btn-primary" style={{ fontSize: '1rem', padding: '12px 28px' }}>
+                    📅 Book First Session Free →
+                  </MagneticButton>
+                  <MagneticButton onClick={() => onNavigatePage('activities')} className="btn-secondary" style={{ fontSize: '1rem', padding: '12px 28px' }}>
+                    🎈 Try Fun Activities
+                  </MagneticButton>
+                </div>
+
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', paddingTop: '16px', borderTop: '1px solid rgba(91, 138, 114, 0.15)' }}>
+                  <div className="pill-badge">🛡️ SAFE SPACE</div>
+                  <div className="pill-badge">💖 YOU MATTER</div>
+                  <div className="pill-badge">🔒 CONFIDENTIAL</div>
+                  <div className="pill-badge">🤲 SUPPORTIVE</div>
+                </div>
+              </div>
+
+              <TiltCard style={{ padding: '18px', textAlign: 'center' }}>
+                <AutoImageCarousel />
+                <div style={{ background: 'linear-gradient(135deg, #385E4C 0%, #274C38 100%)', color: 'white', padding: '16px 18px', borderRadius: '16px' }}>
+                  <div style={{ fontSize: '1rem', marginBottom: '4px' }}>BECAUSE ♡</div>
+                  <div style={{ fontFamily: 'var(--font-heading)', fontSize: '0.95rem', fontWeight: 700, textTransform: 'uppercase' }}>
+                    GOOD MENTAL HEALTH LEADS TO A BETTER YOU & A BETTER TOMORROW
+                  </div>
+                </div>
+              </TiltCard>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- WHAT WE OFFER PAGE ---
+    function OfferingsPage({ onBookSession }) {
+      const items = [
+        { icon: "🎉", title: "FUN & ENGAGING ACTIVITIES", desc: "Exciting events that make mental wellness interactive, relaxed, and enjoyable." },
+        { icon: "🧘", title: "WORKSHOPS & SESSIONS", desc: "Practical workshops on stress management, mindfulness, confidence, relationships and more." },
+        { icon: "🫂", title: "PEER SUPPORT & COMMUNITY", desc: "A safe space to connect, share experiences, and support each other without judgment." },
+        { icon: "🤝", title: "EXPERT COLLABORATIONS", desc: "Partnering with licensed mental health professionals for expert guidance, webinars & referrals." },
+        { icon: "📈", title: "PERSONAL GROWTH & SKILL BUILDING", desc: "Develop life skills, resilience, better mindsets, and effective emotional coping tools." }
+      ];
+
+      return (
+        <div className="page-container bg-page-offerings" style={{ padding: '60px 20px' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <div className="brush-banner-green" style={{ fontSize: '0.8rem', marginBottom: '12px' }}>WHAT WE OFFER</div>
+              <h2 style={{ fontSize: '2.4rem', fontWeight: 800, color: '#274C38' }}>Comprehensive Mental Wellness Services</h2>
+              <p style={{ color: '#5A6E63', maxWidth: '600px', margin: '8px auto 0' }}>Designed for students, young adults, and working professionals to thrive together.</p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px' }}>
+              {items.map((item, idx) => (
+                <TiltCard key={idx} style={{ padding: '24px', borderRadius: '20px', borderTop: '4px solid #5B8A72', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+                  <div>
+                    <div style={{ fontSize: '2.2rem', marginBottom: '14px' }}>{item.icon}</div>
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#274C38', marginBottom: '8px' }}>{item.title}</h3>
+                    <p style={{ color: '#5A6E63', fontSize: '0.9rem' }}>{item.desc}</p>
+                  </div>
+                  <MagneticButton onClick={() => onBookSession(item.title)} className="btn-secondary" style={{ marginTop: '20px', padding: '10px 18px', fontSize: '0.85rem' }}>
+                    📅 Book {item.title.split(' ')[0]} Session →
+                  </MagneticButton>
+                </TiltCard>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- REAL INTERACTIVE SPINNING WHEEL ---
+    function SpinningWheel({ onBookSession }) {
+      const [rotation, setRotation] = useState(0);
+      const [spinning, setSpinning] = useState(false);
+      const [winningResult, setWinningResult] = useState(null);
+
+      const segments = [
+        { label: "5 Deep Breaths 🌬️", color: "#5B8A72" },
+        { label: "Drink Water 💧", color: "#8E7DBE" },
+        { label: "Compliment Friend 💬", color: "#E88E7D" },
+        { label: "Screen Detox 📱", color: "#385E4C" },
+        { label: "3 Gratitudes 📝", color: "#F6D55C" },
+        { label: "Listen to Song 🎵", color: "#554473" }
+      ];
+
+      const spin = () => {
+        if (spinning) return;
+        setSpinning(true);
+        setWinningResult(null);
+
+        const extraRotations = 5 + Math.floor(Math.random() * 5);
+        const randomDegree = Math.floor(Math.random() * 360);
+        const totalNewRotation = rotation + extraRotations * 360 + randomDegree;
+
+        setRotation(totalNewRotation);
+
+        setTimeout(() => {
+          setSpinning(false);
+          const finalAngle = (totalNewRotation % 360);
+          const segmentAngle = 360 / segments.length;
+          const selectedIdx = Math.floor((360 - (finalAngle % 360)) / segmentAngle) % segments.length;
+          const result = segments[selectedIdx].label;
+          setWinningResult(result);
+          if (window.confetti) window.confetti({ particleCount: 80, spread: 70 });
+        }, 3000);
+      };
+
+      return (
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <h3 style={{ fontSize: '1.5rem', color: '#274C38', marginBottom: '6px' }}>🎡 Wheel of Wellness</h3>
+          <p style={{ color: '#5A6E63', marginBottom: '20px', fontSize: '0.9rem' }}>Spin the wheel for your daily micro-wellness challenge!</p>
+
+          <div style={{ fontSize: '2rem', color: '#E88E7D', marginBottom: '-15px', zIndex: 10, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.2))' }}>
+            ▼
+          </div>
+
+          <div style={{ position: 'relative', width: '280px', height: '280px', margin: '0 auto 24px' }}>
+            <svg
+              viewBox="0 0 200 200"
+              style={{
+                width: '100%', height: '100%', borderRadius: '50%', boxShadow: '0 10px 30px rgba(0,0,0,0.18)',
+                transform: `rotate(${rotation}deg)`, transition: spinning ? 'transform 3s cubic-bezier(0.15, 0.85, 0.35, 1.02)' : 'none'
+              }}
+            >
+              {segments.map((seg, i) => {
+                const angle = 360 / segments.length;
+                const startAngle = i * angle;
+                const endAngle = (i + 1) * angle;
+                const x1 = 100 + 100 * Math.cos((Math.PI * (startAngle - 90)) / 180);
+                const y1 = 100 + 100 * Math.sin((Math.PI * (startAngle - 90)) / 180);
+                const x2 = 100 + 100 * Math.cos((Math.PI * (endAngle - 90)) / 180);
+                const y2 = 100 + 100 * Math.sin((Math.PI * (endAngle - 90)) / 180);
+                const textAngle = startAngle + angle / 2;
+                const textX = 100 + 65 * Math.cos((Math.PI * (textAngle - 90)) / 180);
+                const textY = 100 + 65 * Math.sin((Math.PI * (textAngle - 90)) / 180);
+
+                return (
+                  <g key={i}>
+                    <path d={`M100,100 L${x1},${y1} A100,100 0 0,1 ${x2},${y2} Z`} fill={seg.color} stroke="white" strokeWidth="2" />
+                    <text x={textX} y={textY} fill="white" fontSize="9" fontWeight="800" textAnchor="middle" dominantBaseline="middle" transform={`rotate(${textAngle}, ${textX}, ${textY})`}>
+                      {seg.label.split(' ')[0]}
+                    </text>
+                  </g>
+                );
+              })}
+              <circle cx="100" cy="100" r="22" fill="white" stroke="#385E4C" strokeWidth="3" />
+              <text x="100" y="100" textAnchor="middle" dominantBaseline="middle" fontSize="12">🍃</text>
+            </svg>
+          </div>
+
+          <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+            <MagneticButton onClick={spin} disabled={spinning} className="btn-primary" style={{ padding: '12px 28px', fontSize: '0.95rem' }}>
+              {spinning ? "🎡 Spinning..." : "✨ SPIN THE WHEEL! ✨"}
+            </MagneticButton>
+            <MagneticButton onClick={() => onBookSession('Wellness Wheel Challenge Session')} className="btn-secondary" style={{ padding: '12px 24px', fontSize: '0.95rem' }}>
+              📅 Book Wellness Challenge Session →
+            </MagneticButton>
+          </div>
+
+          {winningResult && (
+            <div style={{ marginTop: '20px', padding: '16px 24px', borderRadius: '16px', backgroundColor: '#FAF9F5', border: '2px solid #5B8A72', fontSize: '1.15rem', fontWeight: 800, color: '#274C38', animation: 'welcomePop 0.4s ease-out' }}>
+              🎉 Your Wellness Challenge: {winningResult}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // --- FUN ACTIVITIES PAGE ---
+    function ActivitiesPage({ onBookSession }) {
+      const [activeTab, setActiveTab] = useState('mood-meter');
+      const [selectedMood, setSelectedMood] = useState(null);
+      const [gratitudes, setGratitudes] = useState([
+        { id: 1, text: "Grateful for morning tea and sunshine on my desk today! ☕☀️", author: "Ananya, 21", color: "#FFF9C4" },
+        { id: 2, text: "Thankful for supportive friends who listen without judging.", author: "Rohan, 24", color: "#E1BEE7" }
+      ]);
+      const [newNote, setNewNote] = useState('');
+      const [noteAuthor, setNoteAuthor] = useState('');
+      const [balloons, setBalloons] = useState([
+        { id: 1, text: "Exam Stress", popped: false, color: "#FF8A80" },
+        { id: 2, text: "Overthinking", popped: false, color: "#80D8FF" },
+        { id: 3, text: "Self Doubt", popped: false, color: "#B9F6CA" },
+        { id: 4, text: "Peer Pressure", popped: false, color: "#FFE082" }
+      ]);
+
+      const handleAddGratitude = (e) => {
+        e.preventDefault();
+        if (!newNote.trim()) return;
+        const colors = ["#FFF9C4", "#E1BEE7", "#C8E6C9", "#FFCCBC"];
+        setGratitudes([{ id: Date.now(), text: newNote, author: noteAuthor || "Anonymous", color: colors[Math.floor(Math.random() * colors.length)] }, ...gratitudes]);
+        setNewNote(''); setNoteAuthor('');
+        if (window.confetti) window.confetti({ particleCount: 50 });
+      };
+
+      const popBalloon = (id) => {
+        setBalloons(balloons.map(b => b.id === id ? { ...b, popped: true } : b));
+        if (window.confetti) window.confetti({ particleCount: 40 });
+      };
+
+      const activitiesList = [
+        { id: 'mood-meter', name: 'Mood Meter', icon: '🟡' },
+        { id: 'gratitude-wall', name: 'Gratitude Wall', icon: '📝' },
+        { id: 'balloon-burst', name: 'Stress Balloons', icon: '🎈' },
+        { id: 'wellness-wheel', name: 'Spinning Wellness Wheel', icon: '🎡' }
+      ];
+
+      return (
+        <div className="page-container bg-page-activities" style={{ padding: '60px 20px' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+              <div className="brush-banner-purple" style={{ fontSize: '0.8rem', marginBottom: '12px' }}>INTERACTIVE ACTIVITIES</div>
+              <h2 style={{ fontSize: '2.4rem', fontWeight: 800, color: '#274C38' }}>Live Stress Relief Micro-Apps</h2>
+              <p style={{ color: '#5A6E63' }}>Select an activity below to experience instant relaxation.</p>
+            </div>
+
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', marginBottom: '28px' }}>
+              {activitiesList.map(act => (
+                <button key={act.id} onClick={() => setActiveTab(act.id)} style={{
+                  padding: '10px 20px', borderRadius: '50px', border: 'none', fontWeight: 700, fontSize: '0.9rem', cursor: 'pointer',
+                  backgroundColor: activeTab === act.id ? '#5B8A72' : 'white', color: activeTab === act.id ? 'white' : '#274C38',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.06)'
+                }}>
+                  <span style={{ marginRight: '6px' }}>{act.icon}</span> {act.name}
+                </button>
+              ))}
+            </div>
+
+            <TiltCard style={{ padding: '32px 24px', minHeight: '340px', maxWidth: '780px', margin: '0 auto' }}>
+              {activeTab === 'mood-meter' && (
+                <div style={{ textAlign: 'center' }}>
+                  <h3 style={{ fontSize: '1.5rem', color: '#274C38', marginBottom: '10px' }}>🟡 Mood Meter Booth</h3>
+                  <p style={{ color: '#5A6E63', marginBottom: '24px' }}>Select how you feel right now for an instant recommendation:</p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', marginBottom: '28px' }}>
+                    {[
+                      { label: "Energized ⚡", tip: "Channel that vital energy into creative work or a walk!", bg: "#FFF9C4" },
+                      { label: "Calm & Peaceful 🌿", tip: "Savor this tranquility. Take 3 deep breaths and stay present.", bg: "#C8E6C9" },
+                      { label: "Overwhelmed 🌊", tip: "Pause right now. Drop your shoulders, unclench your jaw, breathe slowly.", bg: "#E1BEE7" },
+                      { label: "Anxious 💭", tip: "Name 5 things you can see around you right now to ground yourself.", bg: "#FFCCBC" }
+                    ].map((m, i) => (
+                      <button key={i} onClick={() => setSelectedMood(m)} style={{
+                        padding: '10px 18px', borderRadius: '14px', border: '2px solid rgba(91, 138, 114, 0.3)',
+                        backgroundColor: selectedMood?.label === m.label ? '#5B8A72' : m.bg,
+                        color: selectedMood?.label === m.label ? 'white' : '#274C38', fontWeight: 700, cursor: 'pointer'
+                      }}>{m.label}</button>
+                    ))}
+                  </div>
+                  {selectedMood && (
+                    <div style={{ padding: '18px', borderRadius: '14px', backgroundColor: '#FAF9F5', borderLeft: '5px solid #8E7DBE', textAlign: 'left', marginBottom: '20px' }}>
+                      <div style={{ fontWeight: 700, color: '#554473', marginBottom: '4px' }}>Mind Ease Recommendation:</div>
+                      <div style={{ color: '#274C38' }}>{selectedMood.tip}</div>
+                    </div>
+                  )}
+                  <MagneticButton onClick={() => onBookSession(`Mood Consultation (${selectedMood ? selectedMood.label : 'General'})`)} className="btn-primary" style={{ padding: '10px 24px' }}>
+                    📅 Book Guided Mood Counseling Session →
+                  </MagneticButton>
+                </div>
+              )}
+
+              {activeTab === 'gratitude-wall' && (
+                <div>
+                  <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                    <h3 style={{ fontSize: '1.5rem', color: '#274C38' }}>📝 Live Gratitude Wall</h3>
+                    <p style={{ color: '#5A6E63', fontSize: '0.9rem' }}>Write a sticky note of gratitude to pin on the wall!</p>
+                  </div>
+                  <form onSubmit={handleAddGratitude} style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', maxWidth: '600px', margin: '0 auto 24px' }}>
+                    <input type="text" placeholder="What are you grateful for today?" value={newNote} onChange={e => setNewNote(e.target.value)} style={{ flex: 1, padding: '10px 16px', borderRadius: '12px', border: '1.5px solid rgba(91,138,114,0.3)' }} required />
+                    <input type="text" placeholder="Your Name" value={noteAuthor} onChange={e => setNoteAuthor(e.target.value)} style={{ width: '130px', padding: '10px 16px', borderRadius: '12px', border: '1.5px solid rgba(91,138,114,0.3)' }} />
+                    <MagneticButton type="submit" className="btn-primary" style={{ padding: '10px 20px' }}>Post Note</MagneticButton>
+                  </form>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+                    {gratitudes.map(note => (
+                      <div key={note.id} className="sticky-note" style={{ backgroundColor: note.color, padding: '20px', minHeight: '110px' }}>
+                        <div className="sticky-tape"></div>
+                        <p style={{ fontFamily: 'var(--font-hand)', fontSize: '1.2rem', color: '#274C38', fontWeight: 600 }}>"{note.text}"</p>
+                        <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#5A6E63', textAlign: 'right', marginTop: '10px' }}>— {note.author}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ textAlign: 'center' }}>
+                    <MagneticButton onClick={() => onBookSession('Gratitude & Journaling Workshop')} className="btn-secondary" style={{ padding: '10px 24px' }}>
+                      📅 Book Gratitude & Journaling Workshop →
+                    </MagneticButton>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'balloon-burst' && (
+                <div style={{ textAlign: 'center' }}>
+                  <h3 style={{ fontSize: '1.5rem', color: '#274C38', marginBottom: '6px' }}>🎈 Stress Balloon Burst</h3>
+                  <p style={{ color: '#5A6E63', marginBottom: '20px' }}>Click any balloon to pop away your stress!</p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center', marginBottom: '20px' }}>
+                    {balloons.map(b => (
+                      <button key={b.id} onClick={() => popBalloon(b.id)} disabled={b.popped} style={{
+                        width: '95px', height: '115px', borderRadius: '50% 50% 50% 50% / 40% 40% 60% 60%',
+                        backgroundColor: b.popped ? 'transparent' : b.color, border: b.popped ? '2px dashed #CBD5E1' : 'none',
+                        cursor: b.popped ? 'default' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px'
+                      }}>
+                        {b.popped ? <span style={{ fontSize: '1.8rem' }}>💥</span> : <span style={{ fontWeight: 700, color: '#274C38', fontSize: '0.85rem' }}>{b.text}</span>}
+                      </button>
+                    ))}
+                  </div>
+                  <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                    <MagneticButton onClick={() => setBalloons(balloons.map(b => ({ ...b, popped: false })))} className="btn-secondary" style={{ padding: '8px 18px' }}>
+                      🔄 Reset Balloons
+                    </MagneticButton>
+                    <MagneticButton onClick={() => onBookSession('Stress Management Workshop')} className="btn-primary" style={{ padding: '8px 20px' }}>
+                      📅 Book Stress Relief Workshop →
+                    </MagneticButton>
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'wellness-wheel' && <SpinningWheel onBookSession={onBookSession} />}
+            </TiltCard>
+          </div>
+        </div>
+      );
+    }
+
+    // --- EXPERIENCE SESSIONS PAGE ---
+    function ExperiencePage({ onBookSession }) {
+      const list = [
+        { title: "Guided Meditation", icon: "🧘", desc: "Mindful breathing & deep relaxation to calm an overactive mind." },
+        { title: "Yoga Sessions", icon: "🧘‍♀️", desc: "Gentle physical movement & stretching for mind-body alignment." },
+        { title: "Tea & Talk Sessions", icon: "☕", desc: "Cozy conversations over warm tea to connect with fellow peers." },
+        { title: "Board Game Café", icon: "🎲", desc: "Fun strategy & party games to de-stress and make new friends." },
+        { title: "Journaling Café", icon: "📓", desc: "Guided prompts & free writing for self-reflection and clarity." },
+        { title: "Art & Creative Therapy", icon: "🎨", desc: "Painting, clay molding, and expressive arts for emotional release." },
+        { title: "Nature Walks", icon: "🌿", desc: "Outdoor mindful strolls to reconnect with nature and fresh air." },
+        { title: "Digital Detox Challenge", icon: "📱", desc: "Unplug from screens for a day and reclaim real-world connection." }
+      ];
+
+      return (
+        <div className="page-container bg-page-experience" style={{ padding: '60px 20px' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+              <div className="brush-banner-purple" style={{ fontSize: '0.8rem', marginBottom: '12px' }}>WELLNESS SESSIONS</div>
+              <h2 style={{ fontSize: '2.4rem', fontWeight: 800, color: '#274C38' }}>Nourishing Sessions For Mind & Body</h2>
+              <p style={{ color: '#5A6E63' }}>Discover our wide range of recurring events, offline cafés, and group sessions.</p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '20px' }}>
+              {list.map((exp, idx) => (
+                <TiltCard key={idx} style={{ padding: '24px', textAlign: 'center', borderRadius: '18px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+                  <div>
+                    <div style={{ fontSize: '2.4rem', marginBottom: '10px' }}>{exp.icon}</div>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#274C38', marginBottom: '6px' }}>{exp.title}</h3>
+                    <p style={{ color: '#5A6E63', fontSize: '0.85rem' }}>{exp.desc}</p>
+                  </div>
+                  <MagneticButton onClick={() => onBookSession(exp.title)} className="btn-secondary" style={{ marginTop: '16px', padding: '8px 14px', fontSize: '0.8rem' }}>
+                    📅 Book {exp.title} →
+                  </MagneticButton>
+                </TiltCard>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- WHO IS IT FOR PAGE ---
+    function WhoForPage({ onBookSession }) {
+      return (
+        <div className="page-container bg-page-whoFor" style={{ padding: '60px 20px' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '36px' }}>
+              <div>
+                <div className="brush-banner-purple" style={{ fontSize: '0.8rem', marginBottom: '12px' }}>WHO IS IT FOR?</div>
+                <h2 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#274C38', marginBottom: '20px' }}>Designed For Every Step Of Your Journey</h2>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  <TiltCard style={{ padding: '20px', borderRadius: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div>
+                      <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#274C38' }}>♡ Students (& College)</h3>
+                      <p style={{ color: '#5A6E63', fontSize: '0.9rem', marginBottom: '12px' }}>Navigate exam stress, peer pressure, and career anxiety with ease.</p>
+                    </div>
+                    <MagneticButton onClick={() => onBookSession('Student Wellness Session')} className="btn-primary" style={{ padding: '6px 14px', fontSize: '0.8rem', alignSelf: 'flex-start' }}>
+                      📅 Book Student Session →
+                    </MagneticButton>
+                  </TiltCard>
+
+                  <TiltCard style={{ padding: '20px', borderRadius: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div>
+                      <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#274C38' }}>♡ Young Adults (18-30 yrs)</h3>
+                      <p style={{ color: '#5A6E63', fontSize: '0.9rem', marginBottom: '12px' }}>Build emotional independence, healthy boundaries, and self-confidence.</p>
+                    </div>
+                    <MagneticButton onClick={() => onBookSession('Young Adult Growth Session')} className="btn-primary" style={{ padding: '6px 14px', fontSize: '0.8rem', alignSelf: 'flex-start' }}>
+                      📅 Book Growth Session →
+                    </MagneticButton>
+                  </TiltCard>
+
+                  <TiltCard style={{ padding: '20px', borderRadius: '16px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                    <div>
+                      <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#274C38' }}>♡ Working Professionals</h3>
+                      <p style={{ color: '#5A6E63', fontSize: '0.9rem', marginBottom: '12px' }}>Manage workplace burnout, work-life balance, and chronic stress.</p>
+                    </div>
+                    <MagneticButton onClick={() => onBookSession('Professional Burnout Session')} className="btn-primary" style={{ padding: '6px 14px', fontSize: '0.8rem', alignSelf: 'flex-start' }}>
+                      📅 Book Professional Session →
+                    </MagneticButton>
+                  </TiltCard>
+                </div>
+              </div>
+
+              <div>
+                <div className="brush-banner-green" style={{ fontSize: '0.8rem', marginBottom: '12px' }}>BENEFITS FOR YOU</div>
+                <h2 style={{ fontSize: '2.2rem', fontWeight: 800, color: '#274C38', marginBottom: '20px' }}>How Mind Ease Transforms Your Life</h2>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '14px', marginBottom: '28px' }}>
+                  {["🍃 Reduce stress & anxiety", "⭐ Boost confidence", "👥 Build meaningful connections", "🎯 Improve focus & productivity"].map((b, i) => (
+                    <TiltCard key={i} style={{ padding: '16px', textAlign: 'center', fontWeight: 700, color: '#274C38', fontSize: '0.88rem' }}>{b}</TiltCard>
+                  ))}
+                </div>
+
+                <div style={{ backgroundColor: 'rgba(142, 125, 190, 0.12)', borderLeft: '5px solid #8E7DBE', padding: '24px', borderRadius: '16px' }}>
+                  <blockquote style={{ fontFamily: 'var(--font-hand)', fontSize: '1.5rem', color: '#554473', fontWeight: 700 }}>
+                    "Taking care of your mind is productive. Not selfish. It's essential." ♡
+                  </blockquote>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // --- COLLABORATIONS PAGE ---
+    function CollaboratePage() {
+      const [collabForm, setCollabForm] = useState({ orgType: 'College', orgName: '', contactName: '', message: '' });
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        if (window.confetti) window.confetti({ particleCount: 70 });
+
+        sendEmailNotification({
+          type: "Partnership Inquiry",
+          orgType: collabForm.orgType,
+          orgName: collabForm.orgName,
+          contactName: collabForm.contactName,
+          message: collabForm.message
+        });
+
+        const waMsg = `Hi Mind Ease! I represent ${collabForm.orgName} (${collabForm.orgType}). My name is ${collabForm.contactName}. ${collabForm.message}`;
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waMsg)}`, '_blank');
+      };
+
+      return (
+        <div className="page-container bg-page-collaborate" style={{ padding: '60px 20px' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ textAlign: 'center', marginBottom: '36px' }}>
+              <div className="brush-banner-green" style={{ fontSize: '0.8rem', marginBottom: '12px' }}>WE COLLABORATE FOR IMPACT 🍃</div>
+              <h2 style={{ fontSize: '2.4rem', fontWeight: 800, color: '#274C38' }}>Partner With Mind Ease Wellness Hub</h2>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '20px', marginBottom: '36px' }}>
+              <TiltCard style={{ padding: '24px', borderRadius: '18px', borderTop: '4px solid #5B8A72' }}>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#274C38', marginBottom: '10px' }}>🎓 COLLEGE PROGRAMS</h3>
+                <p style={{ color: '#5A6E63', fontSize: '0.9rem' }}>• Awareness Campaigns<br/>• Custom Campus Workshops<br/>• Wellness Carnivals & Fest Booths</p>
+              </TiltCard>
+
+              <TiltCard style={{ padding: '24px', borderRadius: '18px', borderTop: '4px solid #8E7DBE' }}>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#554473', marginBottom: '10px' }}>💼 CORPORATE WELLNESS</h3>
+                <p style={{ color: '#5A6E63', fontSize: '0.9rem' }}>• Employee Wellbeing<br/>• Stress & Burnout Management<br/>• Team Building Activities</p>
+              </TiltCard>
+            </div>
+
+            <TiltCard style={{ padding: '32px 24px', maxWidth: '650px', margin: '0 auto', borderRadius: '20px' }}>
+              <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#274C38', textAlign: 'center', marginBottom: '16px' }}>Request Collaboration via WhatsApp & Email</h3>
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <input type="text" placeholder="Organization / College Name" value={collabForm.orgName} onChange={e=>setCollabForm({...collabForm, orgName: e.target.value})} style={inputStyle} required />
+                <input type="text" placeholder="Your Name" value={collabForm.contactName} onChange={e=>setCollabForm({...collabForm, contactName: e.target.value})} style={inputStyle} required />
+                <textarea rows="3" placeholder="Program details or dates..." value={collabForm.message} onChange={e=>setCollabForm({...collabForm, message: e.target.value})} style={{...inputStyle, resize: 'vertical'}} required></textarea>
+                <MagneticButton type="submit" className="btn-whatsapp" style={{ justifyContent: 'center' }}>
+                  💬 Submit & Open WhatsApp
+                </MagneticButton>
+              </form>
+            </TiltCard>
+          </div>
+        </div>
+      );
+    }
+
+    // --- EVENTS & BOOKING PAGE ---
+    function EventsPage({ isModalOpen, onCloseModal, selectedSessionName }) {
+      const [bookingName, setBookingName] = useState('');
+      const [bookingPhone, setBookingPhone] = useState('');
+      const [bookingDate, setBookingDate] = useState('');
+      const [sessionTitle, setSessionTitle] = useState(selectedSessionName || 'Mindfulness & Stress Management');
+      const [confirmed, setConfirmed] = useState(false);
+
+      useEffect(() => {
+        if (selectedSessionName) setSessionTitle(selectedSessionName);
+      }, [selectedSessionName]);
+
+      const handleConfirmBooking = (e) => {
+        e.preventDefault();
+        setConfirmed(true);
+        if (window.confetti) window.confetti({ particleCount: 90 });
+
+        sendEmailNotification({
+          sessionTitle: sessionTitle,
+          clientName: bookingName,
+          clientPhone: bookingPhone,
+          requestedDate: bookingDate
+        });
+
+        const waText = `Hi Mind Ease Wellness Hub! I would like to book a session for: "${sessionTitle}".\nName: ${bookingName}\nPhone: ${bookingPhone}\nPreferred Date: ${bookingDate}`;
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`, '_blank');
+      };
+
+      return (
+        <div className="page-container bg-page-events" style={{ padding: '60px 20px' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
+            <div className="brush-banner-purple" style={{ fontSize: '0.8rem', marginBottom: '12px' }}>UPCOMING EVENTS 🍃</div>
+            <h2 style={{ fontSize: '2.4rem', fontWeight: 800, color: '#274C38', marginBottom: '32px' }}>Join Our Next Interactive Sessions</h2>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '20px' }}>
+              <TiltCard style={{ padding: '24px', textAlign: 'left', borderRadius: '18px' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#8E7DBE', marginBottom: '6px' }}>WORKSHOP</div>
+                <h3 style={{ fontSize: '1.25rem', color: '#274C38', marginBottom: '10px' }}>Mindfulness & Stress Management</h3>
+                <p style={{ color: '#5A6E63', fontSize: '0.9rem', marginBottom: '16px' }}>Saturday, Aug 15 • 4:00 PM • Online Zoom</p>
+                <MagneticButton onClick={() => onCloseModal('Mindfulness & Stress Management')} className="btn-primary" style={{ padding: '8px 20px', fontSize: '0.85rem' }}>
+                  📅 Reserve Spot Now →
+                </MagneticButton>
+              </TiltCard>
+
+              <TiltCard style={{ padding: '24px', textAlign: 'left', borderRadius: '18px' }}>
+                <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#8E7DBE', marginBottom: '6px' }}>PEER SESSION</div>
+                <h3 style={{ fontSize: '1.25rem', color: '#274C38', marginBottom: '10px' }}>Tea & Talk: Overcoming Peer Pressure</h3>
+                <p style={{ color: '#5A6E63', fontSize: '0.9rem', marginBottom: '16px' }}>Wednesday, Aug 19 • 6:00 PM • Mind Ease Lounge</p>
+                <MagneticButton onClick={() => onCloseModal('Tea & Talk: Overcoming Peer Pressure')} className="btn-primary" style={{ padding: '8px 20px', fontSize: '0.85rem' }}>
+                  📅 Reserve Spot Now →
+                </MagneticButton>
+              </TiltCard>
+            </div>
+          </div>
+
+          {/* EVENTS BOOKING MODAL */}
+          {isModalOpen && (
+            <div style={{
+              position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(6px)', zIndex: 9999,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
+            }}>
+              <div className="glass-card" style={{
+                backgroundColor: 'white', maxWidth: '440px', width: '100%', padding: '28px', borderRadius: '20px', position: 'relative'
+              }}>
+                <button onClick={() => onCloseModal(null)} style={{ position: 'absolute', top: '14px', right: '14px', background: 'none', border: 'none', fontSize: '1.3rem', cursor: 'pointer' }}>✕</button>
+                
+                <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#274C38', marginBottom: '4px' }}>Book Your Session</h3>
+                <p style={{ color: '#8E7DBE', fontWeight: 700, fontSize: '0.9rem', marginBottom: '18px' }}>{sessionTitle}</p>
+
+                {confirmed ? (
+                  <div style={{ textAlign: 'center', padding: '16px 0' }}>
+                    <div style={{ fontSize: '2.5rem', marginBottom: '10px' }}>🎉</div>
+                    <h4 style={{ fontSize: '1.2rem', color: '#274C38' }}>Booking Confirmed & Email Sent!</h4>
+                    <p style={{ color: '#5A6E63', margin: '6px 0 16px', fontSize: '0.9rem' }}>Your booking details have been submitted via email & opened on WhatsApp!</p>
+                    <button onClick={() => { setConfirmed(false); onCloseModal(null); }} className="btn-primary" style={{ padding: '8px 20px' }}>Close</button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleConfirmBooking} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    <div>
+                      <label style={labelStyle}>Your Full Name</label>
+                      <input type="text" placeholder="e.g. Rahul Sharma" value={bookingName} onChange={e=>setBookingName(e.target.value)} style={inputStyle} required />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>WhatsApp Phone Number</label>
+                      <input type="tel" placeholder="Enter your mobile number" value={bookingPhone} onChange={e=>setBookingPhone(e.target.value)} style={inputStyle} required />
+                    </div>
+                    <div>
+                      <label style={labelStyle}>Preferred Session Date</label>
+                      <input type="date" value={bookingDate} onChange={e=>setBookingDate(e.target.value)} style={inputStyle} required />
+                    </div>
+                    <MagneticButton type="submit" className="btn-whatsapp" style={{ justifyContent: 'center', marginTop: '8px' }}>
+                      💬 Confirm & Book via WhatsApp & Email
+                    </MagneticButton>
+                  </form>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // --- FLOATING WHATSAPP CHAT WIDGET ---
+    function WhatsAppChatWidget() {
+      const [isOpen, setIsOpen] = useState(false);
+      const [userMsg, setUserMsg] = useState('');
+
+      const handleSend = (msgText) => {
+        const textToSend = msgText || userMsg;
+        if (!textToSend.trim()) return;
+        window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(textToSend)}`, '_blank');
+        setUserMsg('');
+        setIsOpen(false);
+      };
+
+      return (
+        <div className="whatsapp-widget">
+          {isOpen && (
+            <div className="whatsapp-popup">
+              <div style={{ backgroundColor: '#075E54', color: 'white', padding: '14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <img src="logo.jpg" alt="Mind Ease" onError={getLogo} style={{ width: '32px', height: '32px', borderRadius: '50%' }} />
+                  <div>
+                    <div style={{ fontWeight: 700, fontSize: '0.9rem' }}>Mind Ease Support</div>
+                    <div style={{ fontSize: '0.72rem', opacity: 0.9 }}>Online Support • Instant Response</div>
+                  </div>
+                </div>
+                <button onClick={() => setIsOpen(false)} style={{ background: 'none', border: 'none', color: 'white', fontSize: '1.1rem', cursor: 'pointer' }}>✕</button>
+              </div>
+
+              <div style={{ padding: '14px', backgroundColor: '#E5DDD5', minHeight: '150px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ backgroundColor: 'white', padding: '10px 12px', borderRadius: '12px 12px 12px 2px', fontSize: '0.85rem', color: '#22332B', maxWidth: '88%' }}>
+                  Hello! 👋 How can we help you with your mental wellness today?
+                </div>
+              </div>
+
+              <div style={{ padding: '8px', backgroundColor: 'white', display: 'flex', gap: '6px' }}>
+                <input
+                  type="text"
+                  placeholder="Type a message..."
+                  value={userMsg}
+                  onChange={e=>setUserMsg(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleSend()}
+                  style={{ flex: 1, padding: '8px 12px', borderRadius: '20px', border: '1px solid #CBD5E1', fontSize: '0.85rem', outline: 'none' }}
+                />
+                <button onClick={() => handleSend()} style={{ width: '34px', height: '34px', borderRadius: '50%', backgroundColor: '#25D366', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 700 }}>
+                  ➔
+                </button>
+              </div>
+            </div>
+          )}
+
+          <button className="whatsapp-button" onClick={() => setIsOpen(!isOpen)} title="Chat on WhatsApp">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+            </svg>
+          </button>
+        </div>
+      );
+    }
+
+    // --- FOOTER ---
+    function Footer({ onNavigatePage, onShowWelcome }) {
+      return (
+        <footer style={{ backgroundColor: '#22332B', color: 'white' }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '50px 20px 30px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '24px' }}>
+            <div>
+              <div onClick={onShowWelcome} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', cursor: 'pointer' }}>
+                <img src="logo.jpg" alt="Mind Ease" onError={getLogo} style={{ width: '36px', height: '36px', borderRadius: '50%' }} />
+                <span style={{ fontSize: '1.3rem', fontWeight: 800, color: '#FFFFFF' }}>Mind Ease</span>
+              </div>
+              <p style={{ color: '#A3B8AC', fontSize: '0.85rem' }}>Where Minds Connect and Grow 🍃</p>
+            </div>
+            <div>
+              <h4 style={{ color: '#FFFFFF', marginBottom: '10px' }}>PAGE NAVIGATION</h4>
+              <p style={{ color: '#A3B8AC', fontSize: '0.825rem', lineHeight: 1.8 }}>
+                <a href="#" onClick={(e)=>{e.preventDefault(); onNavigatePage('offerings');}} style={{ color: '#A3B8AC', textDecoration: 'none' }}>What We Offer Page</a><br/>
+                <a href="#" onClick={(e)=>{e.preventDefault(); onNavigatePage('activities');}} style={{ color: '#A3B8AC', textDecoration: 'none' }}>Fun Activities Page</a><br/>
+                <a href="#" onClick={(e)=>{e.preventDefault(); onNavigatePage('collaborate');}} style={{ color: '#A3B8AC', textDecoration: 'none' }}>Collaborations Page</a>
+              </p>
+            </div>
+            <div>
+              <h4 style={{ color: '#FFFFFF', marginBottom: '10px' }}>CONTACT SUPPORT</h4>
+              <p style={{ color: '#A3B8AC', fontSize: '0.825rem' }}>
+                💬 <strong>Direct WhatsApp Chat Support</strong><br/>
+                ✉️ Instant Support Online
+              </p>
+            </div>
+          </div>
+
+          <div style={{ backgroundColor: '#554473', padding: '16px 20px', textAlign: 'center' }}>
+            <div style={{ fontSize: '1.05rem', fontWeight: 800, color: '#FFFFFF', letterSpacing: '0.5px' }}>
+              HEALTHY MIND. &nbsp;|&nbsp; HAPPY LIFE. &nbsp;|&nbsp; STRONGER TOGETHER.
+            </div>
+          </div>
+        </footer>
+      );
+    }
+
+    const labelStyle = { display: 'block', fontSize: '0.825rem', fontWeight: 700, color: '#274C38', marginBottom: '4px' };
+    const inputStyle = { width: '100%', padding: '10px 14px', borderRadius: '12px', border: '1.5px solid rgba(91, 138, 114, 0.3)', fontSize: '0.9rem' };
+
+    // --- MAIN APP WITH RELAXING GUITAR MUSIC & CLEAN MUTE/UNMUTE BUTTON ---
+    function App() {
+      const [showWelcome, setShowWelcome] = useState(true);
+      const [currentPage, setCurrentPage] = useState('home');
+      const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+      const [modal, setModal] = useState(false);
+      const [sessionName, setSessionName] = useState(null);
+
+      const currentIdx = pageOrder.findIndex(p => p.id === currentPage);
+      const prevPage = pageOrder[(currentIdx - 1 + pageOrder.length) % pageOrder.length];
+      const nextPage = pageOrder[(currentIdx + 1) % pageOrder.length];
+
+      const handleNavigatePage = (targetPageId) => {
+        if (targetPageId === currentPage) return;
+        setCurrentPage(targetPageId);
+        window.scrollTo(0, 0);
+      };
+
+      // CALM GUITAR MUSIC MUTE / UNMUTE TOGGLE WITH INFINITE LOOP RESTART
+      const handleToggleMusic = () => {
+        const audioEl = document.getElementById('bg-calm-audio');
+        if (!audioEl) return;
+
+        if (isMusicPlaying) {
+          audioEl.pause();
+          setIsMusicPlaying(false);
+        } else {
+          audioEl.volume = 0.45;
+          audioEl.loop = true;
+          audioEl.play().then(() => {
+            setIsMusicPlaying(true);
+          }).catch(err => {
+            console.log("Audio play initiated.");
+          });
+        }
+      };
+
+      // Ensure audio loops infinitely if ended event fires
+      useEffect(() => {
+        const audioEl = document.getElementById('bg-calm-audio');
+        if (!audioEl) return;
+        const handleAudioEnded = () => {
+          audioEl.currentTime = 0;
+          audioEl.play().catch(() => {});
+        };
+        audioEl.addEventListener('ended', handleAudioEnded);
+        return () => audioEl.removeEventListener('ended', handleAudioEnded);
+      }, []);
+
+      // KEYBOARD ARROW NAVIGATION ONLY (◀ ArrowLeft & ArrowRight ▶)
+      useEffect(() => {
+        const handleKeyDown = (e) => {
+          if (showWelcome || modal) return;
+          const targetTag = document.activeElement ? document.activeElement.tagName.toUpperCase() : '';
+          if (['INPUT', 'TEXTAREA', 'SELECT'].includes(targetTag)) return;
+
+          if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            handleNavigatePage(nextPage.id);
+          } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            handleNavigatePage(prevPage.id);
+          }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+      }, [currentPage, showWelcome, modal, nextPage.id, prevPage.id]);
+
+      const openBooking = (name) => {
+        setSessionName(name || 'Mindfulness & Stress Management');
+        setModal(true);
+      };
+
+      return (
+        <div>
+          {showWelcome && <WelcomePage onEnterWebsite={() => {
+            setShowWelcome(false);
+            const audioEl = document.getElementById('bg-calm-audio');
+            if (audioEl) {
+              audioEl.volume = 0.45;
+              audioEl.loop = true;
+              audioEl.play().then(() => setIsMusicPlaying(true)).catch(() => {});
+            }
+          }} />}
+
+          {/* FLOATING SIDE ARROW PAGE NAVIGATION */}
+          <button
+            onClick={() => handleNavigatePage(prevPage.id)}
+            className="side-nav-arrow left-arrow"
+            title={`Previous Page (◀ Arrow Key): ${prevPage.title}`}
+          >
+            ◀
+          </button>
+          <button
+            onClick={() => handleNavigatePage(nextPage.id)}
+            className="side-nav-arrow right-arrow"
+            title={`Next Page (Arrow Key ▶): ${nextPage.title}`}
+          >
+            ▶
+          </button>
+
+          <Navbar
+            currentPage={currentPage}
+            onNavigatePage={handleNavigatePage}
+            onOpenBooking={(name) => openBooking(name)}
+            onShowWelcome={() => setShowWelcome(true)}
+            isMusicPlaying={isMusicPlaying}
+            onToggleMusic={handleToggleMusic}
+          />
+
+          {/* PAGE ROUTER VIEWS */}
+          <div key={currentPage}>
+            {currentPage === 'home' && <HomePage onNavigatePage={handleNavigatePage} onOpenBooking={(name) => openBooking(name)} />}
+            {currentPage === 'offerings' && <OfferingsPage onBookSession={(name) => openBooking(name)} />}
+            {currentPage === 'activities' && <ActivitiesPage onBookSession={(name) => openBooking(name)} />}
+            {currentPage === 'experience' && <ExperiencePage onBookSession={(name) => openBooking(name)} />}
+            {currentPage === 'whoFor' && <WhoForPage onBookSession={(name) => openBooking(name)} />}
+            {currentPage === 'collaborate' && <CollaboratePage />}
+            {currentPage === 'events' && (
+              <EventsPage
+                isModalOpen={modal}
+                onCloseModal={(name) => { if (name) setSessionName(name); else setModal(false); }}
+                selectedSessionName={sessionName}
+              />
+            )}
+          </div>
+
+          {/* GLOBAL BOOKING MODAL */}
+          {modal && currentPage !== 'events' && (
+            <div style={{
+              position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+              backgroundColor: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(6px)', zIndex: 9999,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px'
+            }}>
+              <div className="glass-card" style={{
+                backgroundColor: 'white', maxWidth: '440px', width: '100%', padding: '28px', borderRadius: '20px', position: 'relative'
+              }}>
+                <button onClick={() => setModal(false)} style={{ position: 'absolute', top: '14px', right: '14px', background: 'none', border: 'none', fontSize: '1.3rem', cursor: 'pointer' }}>✕</button>
+                
+                <h3 style={{ fontSize: '1.4rem', fontWeight: 800, color: '#274C38', marginBottom: '4px' }}>Book Your Session</h3>
+                <p style={{ color: '#8E7DBE', fontWeight: 700, fontSize: '0.9rem', marginBottom: '18px' }}>{sessionName}</p>
+
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  if (window.confetti) window.confetti({ particleCount: 90 });
+                  const name = e.target.client_name.value;
+                  const phone = e.target.client_phone.value;
+                  const date = e.target.client_date.value;
+
+                  sendEmailNotification({
+                    sessionTitle: sessionName,
+                    clientName: name,
+                    clientPhone: phone,
+                    requestedDate: date
+                  });
+
+                  const waText = `Hi Mind Ease Wellness Hub! I would like to book a session for: "${sessionName}".\nName: ${name}\nPhone: ${phone}\nPreferred Date: ${date}`;
+                  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(waText)}`, '_blank');
+                  setModal(false);
+                }} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div>
+                    <label style={labelStyle}>Your Full Name</label>
+                    <input type="text" name="client_name" placeholder="e.g. Rahul Sharma" style={inputStyle} required />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>WhatsApp Phone Number</label>
+                    <input type="tel" name="client_phone" placeholder="Enter your mobile number" style={inputStyle} required />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Preferred Session Date</label>
+                    <input type="date" name="client_date" style={inputStyle} required />
+                  </div>
+                  <MagneticButton type="submit" className="btn-whatsapp" style={{ justifyContent: 'center', marginTop: '8px' }}>
+                    💬 Confirm & Book via WhatsApp & Email
+                  </MagneticButton>
+                </form>
+              </div>
+            </div>
+          )}
+
+          <Footer onNavigatePage={handleNavigatePage} onShowWelcome={() => setShowWelcome(true)} />
+          <WhatsAppChatWidget />
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
